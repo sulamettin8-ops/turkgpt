@@ -7,7 +7,7 @@ import google.generativeai as genai
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-# Google AI Studio'dan aldığın AIzaSy... ile başlayan anahtarını tırnak işaretleri arasına yapıştır:
+# Google AI Studio'dan aldığın AIzaSy... ile başlayan anahtarın:
 API_KEY = "AIzaSyAA89xd7aVM938cKhmbDWIMMyiNqAzDUlg"
 
 genai.configure(api_key=API_KEY)
@@ -18,8 +18,9 @@ SYSTEM_INSTRUCTION = (
     "Kullanıcılara saygılı, yardımsever ve Türkçe dil kurallarına uygun yanıtlar verirsin."
 )
 
+# Modeli v1beta standartlarına uygun olarak tanımlıyoruz:
 model = genai.GenerativeModel(
-    model_name="gemini-1.5-flash",
+    model_name="models/gemini-1.5-flash",
     system_instruction=SYSTEM_INSTRUCTION
 )
 
