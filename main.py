@@ -8,7 +8,7 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 # Gemini API Yapılandırması
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AQ.Ab8RN6LOWEVjTvn7HMrxIUotSVDCz5iWzqNo-xL9IOCPQiYlDA")
 genai.configure(api_key=GEMINI_API_KEY)
 
 # Sistem Talimatı ve Model Ayarları
