@@ -7,12 +7,10 @@ import google.generativeai as genai
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-# API Anahtarını Temizleme (Boşluk ve tırnak işaretlerini otomatik siler)
-raw_api_key = os.environ.get("GEMINI_API_KEY", "AQ.Ab8RN6LOWEVjTvn7HMrxIUotSVDCz5iWzqNo-xL9IOCPQiYlDA") or os.environ.get("GOOGLE_API_KEY", "AQ.Ab8RN6LOWEVjTvn7HMrxIUotSVDCz5iWzqNo-xL9IOCPQiYlDA")
-clean_api_key = raw_api_key.strip().strip('"').strip("'")
+# Google AI Studio'dan aldığın AIzaSy... ile başlayan anahtarını tırnak işaretleri arasına yapıştır:
+API_KEY = "AIzaSyAA89xd7aVM938cKhmbDWIMMyiNqAzDUlg"
 
-if clean_api_key:
-    genai.configure(api_key=clean_api_key)
+genai.configure(api_key=API_KEY)
 
 SYSTEM_INSTRUCTION = (
     "Sen TurkGPT adında gelişmiş bir Türkçe yapay zeka asistanısın. "
