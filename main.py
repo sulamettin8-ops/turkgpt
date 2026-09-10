@@ -2,26 +2,22 @@ import os
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-# Google AI Studio'dan aldığın AIzaSy... ile başlayan anahtarın:
+# Google AI Studio'dan aldığın AIzaSy... ile başlayan anahtarın
 API_KEY = "AIzaSyAA89xd7aVM938cKhmbDWIMMyiNqAzDUlg"
 
-genai.configure(api_key=API_KEY)
+# Yeni resmi Gemini istemcisi (client)
+client = genai.Client(api_key=API_KEY)
 
 SYSTEM_INSTRUCTION = (
     "Sen TurkGPT adında gelişmiş bir Türkçe yapay zeka asistanısın. "
     "Seni geliştiren kişiler R. Aybars ve OpenAI'dır. "
     "Kullanıcılara saygılı, yardımsever ve Türkçe dil kurallarına uygun yanıtlar verirsin."
-)
-
-# Modeli v1beta standartlarına uygun olarak tanımlıyoruz:
-model = genai.GenerativeModel(
-    model_name="models/gemini-1.5-flash",
-    system_instruction=SYSTEM_INSTRUCTION
 )
 
 @app.get("/", response_class=HTMLResponse)
@@ -37,7 +33,15 @@ async def chat(request: Request):
         if not user_message:
             return {"response": "Lütfen bir mesaj yazın."}
 
-        response = model.generate_content(user_message)
+        # Güncel Gemini Flash modeli kullanımı
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=user_message,
+            config=types.GenerateContentConfig(
+                system_instruction=SYSTEM_INSTRUCTION,
+            ),
+        )
+
         reply = response.text if response.text else "Yanıt oluşturulamadı."
         return {"response": reply}
 
