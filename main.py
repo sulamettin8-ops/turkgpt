@@ -8,10 +8,9 @@ from google.genai import types
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-# Google AI Studio'dan aldığın AIzaSy... ile başlayan anahtarın
+# Google AI Studio'dan aldığın AIzaSy... ile başlayan anahtarın:
 API_KEY = "AIzaSyAA89xd7aVM938cKhmbDWIMMyiNqAzDUlg"
 
-# Yeni resmi Gemini istemcisi (client)
 client = genai.Client(api_key=API_KEY)
 
 SYSTEM_INSTRUCTION = (
@@ -33,9 +32,9 @@ async def chat(request: Request):
         if not user_message:
             return {"response": "Lütfen bir mesaj yazın."}
 
-        # Güncel Gemini Flash modeli kullanımı
+        # Google'ın önerdiği en güncel model: gemini-3.6-flash
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-3.6-flash",
             contents=user_message,
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_INSTRUCTION,
