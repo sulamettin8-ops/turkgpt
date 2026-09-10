@@ -7,11 +7,13 @@ import google.generativeai as genai
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-# Gemini API Yapılandırması
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AQ.Ab8RN6LOWEVjTvn7HMrxIUotSVDCz5iWzqNo-xL9IOCPQiYlDA")
-genai.configure(api_key=GEMINI_API_KEY)
+# API Anahtarını Temizleme (Boşluk ve tırnak işaretlerini otomatik siler)
+raw_api_key = os.environ.get("GEMINI_API_KEY", "AQ.Ab8RN6LOWEVjTvn7HMrxIUotSVDCz5iWzqNo-xL9IOCPQiYlDA") or os.environ.get("GOOGLE_API_KEY", "AQ.Ab8RN6LOWEVjTvn7HMrxIUotSVDCz5iWzqNo-xL9IOCPQiYlDA")
+clean_api_key = raw_api_key.strip().strip('"').strip("'")
 
-# Sistem Talimatı ve Model Ayarları
+if clean_api_key:
+    genai.configure(api_key=clean_api_key)
+
 SYSTEM_INSTRUCTION = (
     "Sen TurkGPT adında gelişmiş bir Türkçe yapay zeka asistanısın. "
     "Seni geliştiren kişiler R. Aybars ve OpenAI'dır. "
