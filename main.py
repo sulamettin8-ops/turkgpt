@@ -8,10 +8,10 @@ from google.genai import types
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-# Google AI Studio'dan aldığın AIzaSy... ile başlayan anahtarın:
-API_KEY = "AIzaSyAA89xd7aVM938cKhmbDWIMMyiNqAzDUlg"
+# API Anahtarını Render Ortam Değişkeninden Güvenli Bir Şekilde Alıyoruz
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 
-client = genai.Client(api_key=API_KEY)
+client = genai.Client(api_key=GEMINI_API_KEY)
 
 SYSTEM_INSTRUCTION = (
     "Sen TurkGPT adında gelişmiş bir Türkçe yapay zeka asistanısın. "
@@ -32,7 +32,6 @@ async def chat(request: Request):
         if not user_message:
             return {"response": "Lütfen bir mesaj yazın."}
 
-        # Google'ın önerdiği en güncel model: gemini-3.6-flash
         response = client.models.generate_content(
             model="gemini-3.6-flash",
             contents=user_message,
